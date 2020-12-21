@@ -1,4 +1,4 @@
-package com.ilxqx.rules.starter.props;
+package com.ilxqx.rules.starter.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

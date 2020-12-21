@@ -1,6 +1,6 @@
 package com.ilxqx.rules.starter.config;
 
-import com.ilxqx.rules.starter.props.EasyRulesProperties;
+import com.ilxqx.rules.starter.properties.EasyRulesProperties;
 import com.ilxqx.rules.starter.support.EasyRulesTemplate;
 import org.jeasy.rules.api.RulesEngine;
 import org.jeasy.rules.api.RulesEngineParameters;
