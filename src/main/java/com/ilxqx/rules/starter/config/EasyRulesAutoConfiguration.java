@@ -6,6 +6,8 @@ import org.jeasy.rules.api.RulesEngine;
 import org.jeasy.rules.api.RulesEngineParameters;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.InferenceRulesEngine;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +28,7 @@ public class EasyRulesAutoConfiguration {
 
     @Bean
     @Primary
+    @ConditionalOnMissingBean(RulesEngine.class)
     public RulesEngine defaultRulesEngine(EasyRulesProperties properties) {
         return new DefaultRulesEngine(
             new RulesEngineParameters()
@@ -37,6 +40,7 @@ public class EasyRulesAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(RulesEngine.class)
     public RulesEngine inferenceRulesEngine(EasyRulesProperties properties) {
         return new InferenceRulesEngine(
             new RulesEngineParameters()
@@ -48,6 +52,7 @@ public class EasyRulesAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(RulesEngine.class)
     public EasyRulesTemplate easyRulesTemplate(RulesEngine rulesEngine, ApplicationContext applicationContext) {
         return new EasyRulesTemplate(rulesEngine, applicationContext);
     }
