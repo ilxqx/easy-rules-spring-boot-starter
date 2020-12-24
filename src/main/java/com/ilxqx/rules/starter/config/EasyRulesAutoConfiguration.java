@@ -2,10 +2,13 @@ package com.ilxqx.rules.starter.config;
 
 import com.ilxqx.rules.starter.properties.EasyRulesProperties;
 import com.ilxqx.rules.starter.support.EasyRulesTemplate;
+import org.jeasy.rules.api.RuleListener;
 import org.jeasy.rules.api.RulesEngine;
+import org.jeasy.rules.api.RulesEngineListener;
 import org.jeasy.rules.api.RulesEngineParameters;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.InferenceRulesEngine;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -29,26 +32,32 @@ public class EasyRulesAutoConfiguration {
     @Bean
     @Primary
     @ConditionalOnMissingBean(RulesEngine.class)
-    public RulesEngine defaultRulesEngine(EasyRulesProperties properties) {
-        return new DefaultRulesEngine(
+    public RulesEngine defaultRulesEngine(EasyRulesProperties properties, ObjectProvider<RuleListener> ruleListeners, ObjectProvider<RulesEngineListener> rulesEngineListeners) {
+        DefaultRulesEngine engine = new DefaultRulesEngine(
             new RulesEngineParameters()
                 .priorityThreshold(properties.getRulePriorityThreshold())
                 .skipOnFirstAppliedRule(properties.isSkipOnFirstAppliedRule())
                 .skipOnFirstFailedRule(properties.isSkipOnFirstFailedRule())
                 .skipOnFirstNonTriggeredRule(properties.isSkipOnFirstNonTriggeredRule())
         );
+        ruleListeners.orderedStream().forEach(engine::registerRuleListener);
+        rulesEngineListeners.orderedStream().forEach(engine::registerRulesEngineListener);
+        return engine;
     }
 
     @Bean
     @ConditionalOnMissingBean(RulesEngine.class)
-    public RulesEngine inferenceRulesEngine(EasyRulesProperties properties) {
-        return new InferenceRulesEngine(
+    public RulesEngine inferenceRulesEngine(EasyRulesProperties properties, ObjectProvider<RuleListener> ruleListeners, ObjectProvider<RulesEngineListener> rulesEngineListeners) {
+        InferenceRulesEngine engine = new InferenceRulesEngine(
             new RulesEngineParameters()
                 .priorityThreshold(properties.getRulePriorityThreshold())
                 .skipOnFirstAppliedRule(properties.isSkipOnFirstAppliedRule())
                 .skipOnFirstFailedRule(properties.isSkipOnFirstFailedRule())
                 .skipOnFirstNonTriggeredRule(properties.isSkipOnFirstNonTriggeredRule())
         );
+        ruleListeners.orderedStream().forEach(engine::registerRuleListener);
+        rulesEngineListeners.orderedStream().forEach(engine::registerRulesEngineListener);
+        return engine;
     }
 
     @Bean
