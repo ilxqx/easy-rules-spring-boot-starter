@@ -1,5 +1,6 @@
 package com.ilxqx.rules.starter.config;
 
+import com.ilxqx.rules.starter.core.PlainRulesEngine;
 import com.ilxqx.rules.starter.properties.EasyRulesProperties;
 import com.ilxqx.rules.starter.support.EasyRulesTemplate;
 import org.jeasy.rules.api.RuleListener;
@@ -16,7 +17,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 /**
  * Auto config
@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Primary;
 public class EasyRulesAutoConfiguration {
 
     @Bean
-    @Primary
+    @ConditionalOnProperty(prefix = "easy.rules", name = "rules-engine-type", havingValue = "default")
     @ConditionalOnMissingBean(RulesEngine.class)
     public RulesEngine defaultRulesEngine(EasyRulesProperties properties, ObjectProvider<RuleListener> ruleListeners, ObjectProvider<RulesEngineListener> rulesEngineListeners) {
         DefaultRulesEngine engine = new DefaultRulesEngine(
@@ -46,6 +46,17 @@ public class EasyRulesAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "easy.rules", name = "rules-engine-type", havingValue = "plain")
+    @ConditionalOnMissingBean(RulesEngine.class)
+    public RulesEngine plainRulesEngine(EasyRulesProperties properties, ObjectProvider<RuleListener> ruleListeners, ObjectProvider<RulesEngineListener> rulesEngineListeners) {
+        PlainRulesEngine engine = new PlainRulesEngine();
+        ruleListeners.orderedStream().forEach(engine::registerRuleListener);
+        rulesEngineListeners.orderedStream().forEach(engine::registerRulesEngineListener);
+        return engine;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "easy.rules", name = "rules-engine-type", havingValue = "inference")
     @ConditionalOnMissingBean(RulesEngine.class)
     public RulesEngine inferenceRulesEngine(EasyRulesProperties properties, ObjectProvider<RuleListener> ruleListeners, ObjectProvider<RulesEngineListener> rulesEngineListeners) {
         InferenceRulesEngine engine = new InferenceRulesEngine(

@@ -6,7 +6,7 @@
 
     <groupId>com.ilxqx</groupId>
     <artifactId>easy-rules-spring-boot-starter</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
     <name>easy-rules-spring-boot-starter</name>
     <description>A easy way to integrate EasyRules with SpringBoot.</description>
     <url>https://github.com/Venus-WXP/easy-rules-spring-boot-starter</url>
@@ -15,7 +15,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>2.4.1</spring.boot.version>
+        <spring.boot.version>2.5.1</spring.boot.version>
         <easyrules.version>4.1.0</easyrules.version>
     </properties>
 
@@ -109,6 +109,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
             </plugin>
             <!-- nexus-staging -->
             <plugin>

@@ -33,6 +33,10 @@ public class EasyRulesProperties {
      * The skipOnFirstNonTriggeredRule parameter tells the engine to skip next rules when a rule is not triggered.
      */
     private boolean skipOnFirstNonTriggeredRule = false;
+    /**
+     * The rulesEngineType parameter tells autoconfiguration which engine implementation to use.
+     */
+    private RulesEngineType rulesEngineType;
 
     public boolean isEnabled() {
         return enabled;
@@ -74,16 +78,30 @@ public class EasyRulesProperties {
         this.skipOnFirstNonTriggeredRule = skipOnFirstNonTriggeredRule;
     }
 
+    public RulesEngineType getRulesEngineType() {
+        return rulesEngineType;
+    }
+
+    public void setRulesEngineType(RulesEngineType rulesEngineType) {
+        this.rulesEngineType = rulesEngineType;
+    }
+
+    enum RulesEngineType {
+        DEFAULT,
+        PLAIN,
+        INFERENCE
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EasyRulesProperties that = (EasyRulesProperties) o;
-        return enabled == that.enabled && rulePriorityThreshold == that.rulePriorityThreshold && skipOnFirstAppliedRule == that.skipOnFirstAppliedRule && skipOnFirstFailedRule == that.skipOnFirstFailedRule && skipOnFirstNonTriggeredRule == that.skipOnFirstNonTriggeredRule;
+        return enabled == that.enabled && rulePriorityThreshold == that.rulePriorityThreshold && skipOnFirstAppliedRule == that.skipOnFirstAppliedRule && skipOnFirstFailedRule == that.skipOnFirstFailedRule && skipOnFirstNonTriggeredRule == that.skipOnFirstNonTriggeredRule && rulesEngineType == that.rulesEngineType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(enabled, rulePriorityThreshold, skipOnFirstAppliedRule, skipOnFirstFailedRule, skipOnFirstNonTriggeredRule);
+        return Objects.hash(enabled, rulePriorityThreshold, skipOnFirstAppliedRule, skipOnFirstFailedRule, skipOnFirstNonTriggeredRule, rulesEngineType);
     }
 }
