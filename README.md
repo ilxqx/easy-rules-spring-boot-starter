@@ -1,4 +1,4 @@
-# 引入依赖
+# 🔨 引入依赖
 
 ```xml
 <dependency>
@@ -8,7 +8,7 @@
 </dependency>
 ```
 
-# 使用方法
+# 🏷 使用方法
 
 使用前，`application.yml` 配置中需要增加：
 
